@@ -10,7 +10,7 @@ public class BootBroadcast extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.qira.biometria");
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.qira.biometria.generica");
         if (launchIntent != null) {
             context.startActivity(launchIntent);
             Toast toast = Toast.makeText(context, "Boot finalizado com sucesso!", Toast.LENGTH_SHORT);

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void callApp() {
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.qira.biometria");
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.qira.biometria.generica");
         if (launchIntent != null) {
             startActivity(launchIntent);
         }
