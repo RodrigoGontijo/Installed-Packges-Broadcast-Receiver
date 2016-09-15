@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "768261918096",
+    "firebase_url": "https://logsqirabiometria.firebaseio.com",
+    "project_id": "logsqirabiometria",
+    "storage_bucket": "logsqirabiometria.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768261918096:android:7c5d6790420beb91",
+        "android_client_info": {
+          "package_name": "qira.com.installpackagesbroadcast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768261918096-6qs0jjvp0c99nrhbuvjkbhn20q49jfsv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHD680iqWTPk0cZfs7FjaFCN4T6cWxaXU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
