@@ -9,8 +9,8 @@ android {
         applicationId "qira.com.installpackagesbroadcast"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 102
-        versionName "1.2"
+        versionCode 106
+        versionName "1.6"
     }
     buildTypes {
         release {

@@ -23,7 +23,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
 
-    private static final int DELAY = 60000; //milliseconds
+    private static final int DELAY = 660000; //milliseconds
 
     private TimerTask myTask;
     private Timer timer;
@@ -35,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
     private Handler h = new Handler();
-    private Runnable finalizer;
-    private boolean initializationFailed = true;
+    private boolean initializationFail = true;
 
 
     @Override
@@ -61,24 +60,38 @@ public class MainActivity extends AppCompatActivity {
         editor = sharedPref.edit();
 
 
-        broadcastInitialization();
+        BroadcastReceiver broadcast_receiver_finish_activity = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals("initialization_ok")) {
+                    initializationFail = false;
+                    editor.putInt("initialization_ok", sharedPref.getInt(("initialization_ok"), 0) + 1);
+                    editor.commit();
+                    myRef.child("Contador Inicialização OK :").setValue(sharedPref.getInt(("initialization_ok"), 0));
+                }
+            }
+        };
+        registerReceiver(broadcast_receiver_finish_activity, new IntentFilter("initialization_ok"));
+
+
+        h.postDelayed(new Runnable() {
+            public void run() {
+                if (initializationFail) {
+                    PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+                    pm.reboot("");
+                }
+            }
+        }, DELAY);
+
         broadcastSensorOk();
         broadcastSensorFail();
         broadcastConnectionOk();
         broadcastConnectionFail();
 
 
-        h.postDelayed(new Runnable() {
-            public void run() {
-                if (initializationFailed) {
-                    editor.putInt("initialization_fail", sharedPref.getInt(("initialization_fail"), 0) + 1);
-                    editor.commit();
-                    myRef.child("Contador Inicialização FAIL :").setValue(sharedPref.getInt(("initialization_fail"), 0));
-                    PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-                    pm.reboot("");
-                }
-            }
-        }, DELAY);
+
 
 
     }
@@ -88,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         timer = new Timer();
         myTask = new MyTimerTask();
-        timer.schedule(myTask, 10000);
+        timer.schedule(myTask, 15000);
     }
 
 
@@ -179,30 +192,6 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(broadcast_receiver_finish_activity, new IntentFilter("sensor_ok"));
     }
 
-
-    /**
-     * -------------------- Broadcast Initialization OK --------------------
-     */
-
-
-    private void broadcastInitialization() {
-        BroadcastReceiver broadcast_receiver_finish_activity = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context arg0, Intent intent) {
-                String action = intent.getAction();
-                if (action.equals("initialization_ok")) {
-                    editor.putInt("initialization_ok", sharedPref.getInt(("initialization_ok"), 0) + 1);
-                    editor.commit();
-                    myRef.child("Contador Inicialização OK :").setValue(sharedPref.getInt(("initialization_ok"), 0));
-                    initializationFailed = false;
-                    PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-                    pm.reboot("");
-                }
-            }
-        };
-        registerReceiver(broadcast_receiver_finish_activity, new IntentFilter("initialization_ok"));
-    }
 
 
     public void callApp() {
