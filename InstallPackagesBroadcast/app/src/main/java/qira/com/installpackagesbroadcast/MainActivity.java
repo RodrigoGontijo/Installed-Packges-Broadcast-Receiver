@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.version);
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            textView.setText("InstallPackages: " + "V" + pInfo.versionName.toString());
+            textView.setText("Version: " + pInfo.versionName.toString() + " Seed");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         h.postDelayed(new Runnable() {
             public void run() {
                 if (initializationFail) {
+                    editor.putInt("initialization_fail", sharedPref.getInt(("initialization_fail"), 0) + 1);
+                    editor.commit();
+                    myRef.child("Contador Inicialização FAIL:").setValue(sharedPref.getInt(("initialization_fail"), 0));
                     PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
                     pm.reboot("");
                 }
